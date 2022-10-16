@@ -8,7 +8,8 @@ function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const state = { message, date };
+    const dateNow = new Date();
+    const state = { message, date, dateNow };
     valueForm.some((todo) => todo.message === message)
       ? alert("Такой номер уже есть ")
       : onSubmit(state);

@@ -3,6 +3,7 @@ import { ReactComponent as DeleteIcon } from "../../../icons/delete.svg";
 import { Link, useMatch } from "react-router-dom";
 
 function TodoItem({
+  dateNow,
   id,
   text,
   completed,
@@ -29,6 +30,7 @@ function TodoItem({
       <Button type="button" onClick={onDeleteTodo}>
         <DeleteIcon width="20px" height="20px" fill="red" />
       </Button>
+      <p>{dateNow}</p>
       <p>{date}</p>
     </DivItem>
   );

@@ -14,6 +14,21 @@ export default function TodosPage() {
   const [filter, setFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  // const timeFormat = (function () {
+  //   function num(value) {
+  //     value = Math.floor(value);
+  //     return value < 10 ? "0" + value : value;
+  //   }
+
+  //   return function (ms /**number*/) {
+  //     const sec = ms / 1000,
+  //       hours = (sec / 3600) % 24,
+  //       minutes = (sec / 60) % 60,
+  //       seconds = sec % 60;
+  //     return num(hours) + ":" + num(minutes) + ":" + num(seconds);
+  //   };
+  // })();
+
   //   componentDidMount() {
   //     const todos = localStorage.getItem("todos");
   //     const parsedTodos = JSON.parse(todos);
@@ -43,8 +58,12 @@ export default function TodosPage() {
     setTodos((prevState) => todos.filter((todo) => todo.id !== todoId));
   };
 
-  const formSubmitHandler = ({ message, date }) => {
+  const formSubmitHandler = ({ message, date, dateNow }) => {
+    const year = dateNow.getFullYear();
+    const mounth = dateNow.getMonth();
+    const day = dateNow.getDate();
     const todoItem = {
+      dateNow: `${year}-${mounth + 1}-${day}`,
       message,
       date,
       id: nanoid(),

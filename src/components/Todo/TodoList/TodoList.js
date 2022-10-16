@@ -5,9 +5,10 @@ function TodoList({ todos, onToggleCompleted, onDeleteTodo }) {
   return (
     <div>
       <Ul>
-        {todos.map(({ date, id, message, completed }) => (
+        {todos.map(({ dateNow, date, id, message, completed }) => (
           <li key={id}>
             <TodoItem
+              dateNow={dateNow}
               id={id}
               onDeleteTodo={() => onDeleteTodo(id)}
               onToggleCompleted={() => onToggleCompleted(id)}
