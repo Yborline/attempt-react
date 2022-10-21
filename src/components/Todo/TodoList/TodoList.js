@@ -1,14 +1,20 @@
+import { useEffect } from "react";
 import TodoItem from "../TodoItem/TodoItem";
 import { Ul } from "./TodoList.styled";
 
 function TodoList({ todos, onToggleCompleted, onDeleteTodo }) {
+
+  // useEffect(() => {
+  //   attempt()
+
+  // }, []);
+
   return (
     <div>
       <Ul>
-        {todos.map(({ dateNow, date, id, message, completed }) => (
+        {todos.map(({ date, id, message, completed }) => (
           <li key={id}>
             <TodoItem
-              dateNow={dateNow}
               id={id}
               onDeleteTodo={() => onDeleteTodo(id)}
               onToggleCompleted={() => onToggleCompleted(id)}

@@ -1,9 +1,11 @@
 import { DivItem, Button, DivOther } from "./TodoItem.styled";
 import { ReactComponent as DeleteIcon } from "../../../icons/delete.svg";
 import { Link, useMatch } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import hook from "../../../hooks/hookTimer";
+import { Outlet } from "react-router-dom";
 
 function TodoItem({
-  dateNow,
   id,
   text,
   completed,
@@ -11,27 +13,31 @@ function TodoItem({
   onDeleteTodo,
   date,
 }) {
-  const match = useMatch("/todos");
+  const [time, setTime] = useState(() => new Date());
+  const [finalTime, setFinalTime] = hook.useFinaltimer(date, "");
+  const [showTime, setShowTime] = useState(false);
 
-  console.log(match);
+  const togglebutton = () => {
+    setShowTime(!showTime);
+  };
 
   return (
     <DivItem>
       <DivOther>
-        <Link to={`${match.pathnameBase}/${id}`}>
-          <p>{text}</p>
-          <input
-            type="checkbox"
-            onChange={onToggleCompleted}
-            checked={completed}
-          ></input>
-        </Link>
+        <p>{text}</p>
+        <input
+          type="checkbox"
+          onChange={onToggleCompleted}
+          checked={completed}
+        ></input>
       </DivOther>
       <Button type="button" onClick={onDeleteTodo}>
         <DeleteIcon width="20px" height="20px" fill="red" />
       </Button>
-      <p>{dateNow}</p>
-      <p>{date}</p>
+      <button type="button" onClick={togglebutton}>
+        {date}
+      </button>
+      {showTime && <p>{finalTime}</p>}
     </DivItem>
   );
 }

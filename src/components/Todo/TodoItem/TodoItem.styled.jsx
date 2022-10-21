@@ -21,7 +21,7 @@ border-radius:50%;
 background:gray;
 background-color: #fff;
 margin-left:20px;
-
+cursor:pointer;
 
 `
 

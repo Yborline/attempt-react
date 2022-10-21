@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Container } from "./TodosPage.styled";
 import TodoForm from "../../components/Todo/TodoForm/TodoForm";
 import TodoList from "../../components/Todo/TodoList/TodoList";
@@ -8,26 +8,12 @@ import Clock from "../../components/Clock/Clock";
 import { nanoid } from "nanoid";
 import { ReactComponent as AddIcon } from "../../icons/add.svg";
 import hooks from "../../hooks/hookTodo";
+import { toastError, toastSucces } from "../../toast/toast";
 
 export default function TodosPage() {
   const [todos, setTodos] = hooks.useLocalStorage("todos", []);
   const [filter, setFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  // const timeFormat = (function () {
-  //   function num(value) {
-  //     value = Math.floor(value);
-  //     return value < 10 ? "0" + value : value;
-  //   }
-
-  //   return function (ms /**number*/) {
-  //     const sec = ms / 1000,
-  //       hours = (sec / 3600) % 24,
-  //       minutes = (sec / 60) % 60,
-  //       seconds = sec % 60;
-  //     return num(hours) + ":" + num(minutes) + ":" + num(seconds);
-  //   };
-  // })();
 
   //   componentDidMount() {
   //     const todos = localStorage.getItem("todos");
@@ -41,6 +27,9 @@ export default function TodosPage() {
   //       localStorage.setItem("todos", JSON.stringify(this.state.todos));
   //     }
   //   }
+  // .
+  // .
+  // .
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -58,25 +47,31 @@ export default function TodosPage() {
     setTodos((prevState) => todos.filter((todo) => todo.id !== todoId));
   };
 
-  const formSubmitHandler = ({ message, date, dateNow }) => {
-    const year = dateNow.getFullYear();
-    const mounth = dateNow.getMonth();
-    const day = dateNow.getDate();
+  // this.state.todos.find(
+  //   (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
+  // )
+
+  const formSubmitHandler = ({ message, date }) => {
+    console.log(date);
     const todoItem = {
-      dateNow: `${year}-${mounth + 1}-${day}`,
       message,
       date,
+      // timeLeft: attempt(finalDate),
       id: nanoid(),
       completed: false,
     };
 
-    todos.find(
+    const submit = () => {
+      setTodos((prevState) => [todoItem, ...prevState]);
+      toastSucces("Your note has been saved!");
+      toggleModal();
+    };
+
+    todos.some(
       (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
     )
-      ? alert("Такое имя уже занято")
-      : setTodos((prevState) => [todoItem, ...prevState]);
-
-    toggleModal();
+      ? toastError("This text already exists.")
+      : submit();
   };
 
   const changeFilter = (e) => {
@@ -100,7 +95,7 @@ export default function TodosPage() {
 
   return (
     <Container>
-      <Clock />
+      {/* <Clock /> */}
       <button onClick={toggleModal}>
         <AddIcon width="40px" height="40px" fill="gray" />
       </button>

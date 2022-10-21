@@ -1,10 +1,11 @@
 // import "./App.css";
 import hooks from "./hooks/hookTodo";
 import { Component } from "react";
-import { ToastContainer } from "react-toastify";
-import { Routes, Route } from "react-router-dom";
 
+import { Routes, Route, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 // import { useEffect } from "react";
+import { Toast } from "./toast/toast";
 import { Container } from "./App.styled";
 import TodosPage from "./Pages/TodosPage/TodosPage";
 import PokemonPage from "./Pages/PokemonPage/PokemonPage";
@@ -13,8 +14,6 @@ import Images from "./components/Pokemon/PokemonForm/PokemonForm";
 import Navigation from "./components/Navigation/Navigation";
 import Home from "./components/Home/Home";
 import Clock from "./components/Clock/Clock";
-
-import { nanoid } from "nanoid";
 
 class App extends Component {
   render() {
@@ -26,14 +25,16 @@ class App extends Component {
         <Routes>
           <Route path="/" element={<Navigation />}>
             <Route index element={<Home />}></Route>
-            <Route path="/user" element={<UseMenu />}></Route>
-            <Route path="/pokemon" element={<PokemonPage />}></Route>
-            <Route path="/todos" element={<TodosPage />}></Route>
-            <Route path="/clock" element={<Clock />}></Route>
+            <Route path="user" element={<UseMenu />}></Route>
+            <Route path="pokemon" element={<PokemonPage />}></Route>
+            <Route path="todos" element={<TodosPage />}>
+              {/* <Route path=":todosTime" element={<IdItem />}></Route> */}
+            </Route>
+            <Route path="clock" element={<Clock />}></Route>
             <Route path="*" element={<Home />}></Route>
           </Route>
         </Routes>
-        <ToastContainer
+        {/* <ToastContainer
           position="top-center"
           autoClose={5000}
           hideProgressBar={false}
@@ -43,7 +44,9 @@ class App extends Component {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-        />
+          theme="light"
+        /> */}
+        <Toast />
       </>
     );
   }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Form, Label, Div } from "./TodoForm.styled";
-import { ToastContainer } from "react-toastify";
+import { toastError, toastSucces } from "../../../toast/toast";
 
 function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
   const [message, setMessage] = useState("");
@@ -8,11 +8,9 @@ function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const dateNow = new Date();
-    const state = { message, date, dateNow };
-    valueForm.some((todo) => todo.message === message)
-      ? alert("Такой номер уже есть ")
-      : onSubmit(state);
+    const state = { message, date };
+    // valueForm.some((todo) => todo.message === message)
+    message.trim() === "" ? toastError("Введите текст") : onSubmit(state);
     reset();
   };
 
