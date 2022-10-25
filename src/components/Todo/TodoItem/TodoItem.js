@@ -37,7 +37,9 @@ function TodoItem({
       <button type="button" onClick={togglebutton}>
         {date}
       </button>
-      {showTime && <p>{finalTime}</p>}
+      {/* {showTime && <p>{finalTime}</p>} */}
+      {showTime &&
+        (finalTime === false ? <p>время закончилось</p> : <p>{finalTime}</p>)}
     </DivItem>
   );
 }

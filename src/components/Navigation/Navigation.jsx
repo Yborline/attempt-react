@@ -23,7 +23,7 @@ function Navigation() {
           <Link to="/pokemon">Pokemon</Link>
           </StyledLi>
           <StyledLi>
-            <Link to="/clock">Clock</Link>
+            <Link to="/clock">Other</Link>
           </StyledLi>
       </ul>
       <Outlet/>

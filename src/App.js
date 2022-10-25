@@ -1,19 +1,29 @@
 // import "./App.css";
-import hooks from "./hooks/hookTodo";
 import { Component } from "react";
-
-import { Routes, Route, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-// import { useEffect } from "react";
+import { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 import { Toast } from "./toast/toast";
-import { Container } from "./App.styled";
-import TodosPage from "./Pages/TodosPage/TodosPage";
-import PokemonPage from "./Pages/PokemonPage/PokemonPage";
-import UseMenu from "./components/UseMenu/UseMenu";
-import Images from "./components/Pokemon/PokemonForm/PokemonForm";
 import Navigation from "./components/Navigation/Navigation";
-import Home from "./components/Home/Home";
-import Clock from "./components/Clock/Clock";
+import { Container } from "./App.styled";
+
+const OtherInfoTodos = lazy(() =>
+  import("././components/Todo/OtherInfoTodos/OtherInfoTodos")
+);
+
+const HomeView = lazy(() =>
+  import("./Pages/HomePage/HomePage" /* webpackChunkName: "home-view" */)
+);
+const PokemonView = lazy(() =>
+  import(
+    "./Pages/PokemonPage/PokemonPage" /* webpackChunkName: "pokemon-view" */
+  )
+);
+const OtherView = lazy(() =>
+  import("./Pages/OtherPage/OtherPage" /* webpackChunkName: "other-view" */)
+);
+const TodosView = lazy(() =>
+  import("./Pages/TodosPage/TodosPage" /* webpackChunkName: "todos-view" */)
+);
 
 class App extends Component {
   render() {
@@ -22,18 +32,21 @@ class App extends Component {
     return (
       <>
         {/* <Navigation /> */}
-        <Routes>
-          <Route path="/" element={<Navigation />}>
-            <Route index element={<Home />}></Route>
-            <Route path="user" element={<UseMenu />}></Route>
-            <Route path="pokemon" element={<PokemonPage />}></Route>
-            <Route path="todos" element={<TodosPage />}>
-              {/* <Route path=":todosTime" element={<IdItem />}></Route> */}
+
+        <Suspense fallback={<h1>Загружаем...</h1>}>
+          <Routes>
+            <Route path="/" element={<Navigation />}>
+              <Route index element={<HomeView />}></Route>
+              <Route path="pokemon" element={<PokemonView />}></Route>
+              <Route path="todos" element={<TodosView />}>
+                <Route path="other" element={<OtherInfoTodos />}></Route>
+                {/* <Route path=":todosTime" element={<IdItem />}></Route> */}
+              </Route>
+              <Route path="clock" element={<OtherView />}></Route>
+              <Route path="*" element={<HomeView />}></Route>
             </Route>
-            <Route path="clock" element={<Clock />}></Route>
-            <Route path="*" element={<Home />}></Route>
-          </Route>
-        </Routes>
+          </Routes>
+        </Suspense>
         {/* <ToastContainer
           position="top-center"
           autoClose={5000}

@@ -4,6 +4,9 @@ const finalDay = (nextDay, today) => {
   const sumMiliseconds = parseNext - parse;
   console.log(sumMiliseconds);
 
+  if (sumMiliseconds <= 0) {
+    return false;
+  }
   function msecToString(val) {
     let mins = Math.round(val / 60000);
     let hours = Math.floor(mins / 60);
@@ -11,6 +14,7 @@ const finalDay = (nextDay, today) => {
     mins %= 60;
     hours %= 24;
     if (mins < 10) mins = "0" + mins;
+
     return day + " day " + hours + ":" + mins;
   }
 

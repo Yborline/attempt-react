@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useHistory } from "react";
 import { Container } from "./TodosPage.styled";
 import TodoForm from "../../components/Todo/TodoForm/TodoForm";
 import TodoList from "../../components/Todo/TodoList/TodoList";
@@ -9,12 +9,32 @@ import { nanoid } from "nanoid";
 import { ReactComponent as AddIcon } from "../../icons/add.svg";
 import hooks from "../../hooks/hookTodo";
 import { toastError, toastSucces } from "../../toast/toast";
+import SortSelector from "../../components/SortSelector/SortSelector";
+import {
+  NavLink,
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import OtherInfoTodos from "../../components/Todo/OtherInfoTodos/OtherInfoTodos";
 
 export default function TodosPage() {
   const [todos, setTodos] = hooks.useLocalStorage("todos", []);
   const [filter, setFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(navigate);
+  console.log(location);
+
+  // const sortOrder = location.search;
+  const sortOrder =
+    new URLSearchParams(location.search).get("sortBy") ?? "ascending";
+  console.log(sortOrder);
   //   componentDidMount() {
   //     const todos = localStorage.getItem("todos");
   //     const parsedTodos = JSON.parse(todos);
@@ -30,6 +50,34 @@ export default function TodosPage() {
   // .
   // .
   // .
+
+  const sortOptions = [
+    { value: "ascending", label: "По умолачнию" },
+    { value: "descending", label: "По убыванию" },
+  ];
+
+  const onSortOrderChange = (order) => {
+    console.log(order);
+    navigate({ ...location, search: `sortBy=${order}` });
+  };
+
+  useEffect(() => {
+    console.log(location.search);
+    if (location.search !== "") {
+      return;
+    }
+    navigate({ ...location, search: `sortBy=ascending` });
+  }, [navigate, location]);
+
+  useEffect(() => {
+    setTodos((prevTodos) =>
+      [...prevTodos].sort((a, b) => {
+        const aDate = Date.parse(a.date + "T23:59");
+        const bDate = Date.parse(b.date + "T23:59");
+        return sortOrder === "ascending" ? aDate - bDate : bDate - aDate;
+      })
+    );
+  }, [setTodos, sortOrder]);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -96,12 +144,12 @@ export default function TodosPage() {
   return (
     <Container>
       {/* <Clock /> */}
+      <header className="App-header">TOdOs</header>
       <button onClick={toggleModal}>
         <AddIcon width="40px" height="40px" fill="gray" />
       </button>
-      <header className="App-header">TOdOs</header>
-      <p>количество todo {todos.length}</p>
-      <p>количество выполненых todo {totalTodoCaunt}</p>
+      {/* <p>количество todo {todos.length}</p> */}
+      {/* <p>количество выполненых todo {totalTodoCaunt}</p> */}
       {showModal && (
         <Modal close={toggleModal}>
           <TodoForm
@@ -111,8 +159,28 @@ export default function TodosPage() {
           />
         </Modal>
       )}
+      {/* <Routes>
+        <Route path=":id" element={<UserProfile />} />
+        <Route
+          path="other"
+          element={
+            <OtherInfoTodos
+              totalTodos={todos.length}
+              totalComplateTodos={totalTodoCaunt}
+            />
+          }
+        />
+      </Routes> */}
 
+      <NavLink to="other">Other</NavLink>
+      {/* <NavLink></NavLink> */}
+      <Outlet context={[todos.length, totalTodoCaunt]} />
       <Filter value={filter} onChange={changeFilter} />
+      <SortSelector
+        options={sortOptions}
+        onChange={onSortOrderChange}
+        value={sortOrder}
+      />
       <TodoList
         todos={getVisibleTodos}
         onDeleteTodo={deleteTodo}
