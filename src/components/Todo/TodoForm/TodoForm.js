@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Form, Label, Div } from "./TodoForm.styled";
 import { toastError, toastSucces } from "../../../toast/toast";
+import { connect } from "react-redux";
+import { addTodo } from "../../../redux/todos/todos-actions";
 
 function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
   const [message, setMessage] = useState("");
@@ -67,5 +69,8 @@ function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
     </>
   );
 }
+const mapDispatchToProps = (dispatch) => ({
+  onSubmit: (text) => dispatch(addTodo(text)),
+});
 
-export default TodoForm;
+export default connect(null, mapDispatchToProps)(TodoForm);

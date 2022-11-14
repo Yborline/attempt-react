@@ -11,7 +11,7 @@ function Navigation() {
     <div>
       <ul>
           <StyledLi>
-            <Link to="/" end>
+            <Link to="/"  end>
               Home
             </Link>
           </StyledLi>

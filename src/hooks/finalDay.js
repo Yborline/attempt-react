@@ -2,7 +2,6 @@ const finalDay = (nextDay, today) => {
   const parse = Date.parse(today);
   const parseNext = Date.parse(nextDay + "T23:59");
   const sumMiliseconds = parseNext - parse;
-  console.log(sumMiliseconds);
 
   if (sumMiliseconds <= 0) {
     return false;

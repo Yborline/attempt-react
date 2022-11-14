@@ -1,25 +1,17 @@
-import { useState, useMemo, useEffect, useRef, useHistory } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Container } from "./TodosPage.styled";
 import TodoForm from "../../components/Todo/TodoForm/TodoForm";
 import TodoList from "../../components/Todo/TodoList/TodoList";
 import Filter from "../../components/Todo/Filter/Filter";
 import Modal from "../../components/Modal/Modal";
-import Clock from "../../components/Clock/Clock";
+
 import { nanoid } from "nanoid";
 import { ReactComponent as AddIcon } from "../../icons/add.svg";
 import hooks from "../../hooks/hookTodo";
 import { toastError, toastSucces } from "../../toast/toast";
+import "react-toastify/dist/ReactToastify.css";
 import SortSelector from "../../components/SortSelector/SortSelector";
-import {
-  NavLink,
-  Link,
-  Outlet,
-  useLocation,
-  useNavigate,
-  Route,
-  Routes,
-} from "react-router-dom";
-import OtherInfoTodos from "../../components/Todo/OtherInfoTodos/OtherInfoTodos";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 export default function TodosPage() {
   const [todos, setTodos] = hooks.useLocalStorage("todos", []);
@@ -28,13 +20,11 @@ export default function TodosPage() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(navigate);
-  console.log(location);
 
   // const sortOrder = location.search;
   const sortOrder =
     new URLSearchParams(location.search).get("sortBy") ?? "ascending";
-  console.log(sortOrder);
+
   //   componentDidMount() {
   //     const todos = localStorage.getItem("todos");
   //     const parsedTodos = JSON.parse(todos);
@@ -57,12 +47,10 @@ export default function TodosPage() {
   ];
 
   const onSortOrderChange = (order) => {
-    console.log(order);
     navigate({ ...location, search: `sortBy=${order}` });
   };
 
   useEffect(() => {
-    console.log(location.search);
     if (location.search !== "") {
       return;
     }
@@ -91,40 +79,39 @@ export default function TodosPage() {
     );
   };
 
-  const deleteTodo = (todoId) => {
-    setTodos((prevState) => todos.filter((todo) => todo.id !== todoId));
-  };
+  // const deleteTodo = (todoId) => {
+  //   setTodos((prevState) => todos.filter((todo) => todo.id !== todoId));
+  // };
 
   // this.state.todos.find(
   //   (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
   // )
 
-  const formSubmitHandler = ({ message, date }) => {
-    console.log(date);
-    const todoItem = {
-      message,
-      date,
-      // timeLeft: attempt(finalDate),
-      id: nanoid(),
-      completed: false,
-    };
+  // const formSubmitHandler = ({ message, date }) => {
+  //   const todoItem = {
+  //     message,
+  //     date,
+  //     // timeLeft: attempt(finalDate),
+  //     id: nanoid(),
+  //     completed: false,
+  //   };
 
-    const submit = () => {
-      setTodos((prevState) => [todoItem, ...prevState]);
-      toastSucces("Your note has been saved!");
-      toggleModal();
-    };
+  //   const submit = () => {
+  //     setTodos((prevState) => [todoItem, ...prevState]);
+  //     toastSucces("Your note has been saved!");
+  //     toggleModal();
+  //   };
 
-    todos.some(
-      (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
-    )
-      ? toastError("This text already exists.")
-      : submit();
-  };
+  //   todos.some(
+  //     (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
+  //   )
+  //     ? toastError("This text already exists.")
+  //     : submit();
+  // };
 
-  const changeFilter = (e) => {
-    setFilter(e.currentTarget.value);
-  };
+  // const changeFilter = (e) => {
+  //   setFilter(e.currentTarget.value);
+  // };
 
   const getVisibleTodos = useMemo(() => {
     const normalizedFilter = filter.toLowerCase();
@@ -134,48 +121,29 @@ export default function TodosPage() {
     return visible;
   }, [filter, todos]);
 
-  const totalTodoCaunt = useMemo(() => {
-    return todos.reduce(
-      (total, todo) => (todo.completed ? total + 1 : total),
-      0
-    );
-  }, [todos]);
-
   return (
     <Container>
-      {/* <Clock /> */}
       <header className="App-header">TOdOs</header>
       <button onClick={toggleModal}>
         <AddIcon width="40px" height="40px" fill="gray" />
       </button>
-      {/* <p>количество todo {todos.length}</p> */}
-      {/* <p>количество выполненых todo {totalTodoCaunt}</p> */}
       {showModal && (
         <Modal close={toggleModal}>
           <TodoForm
             valueForm={todos}
-            onSubmit={formSubmitHandler}
+            // onSubmit={formSubmitHandler}
             toggleModal={toggleModal}
           />
         </Modal>
       )}
-      {/* <Routes>
-        <Route path=":id" element={<UserProfile />} />
-        <Route
-          path="other"
-          element={
-            <OtherInfoTodos
-              totalTodos={todos.length}
-              totalComplateTodos={totalTodoCaunt}
-            />
-          }
-        />
-      </Routes> */}
 
+      {/* <NavLink to="main">Main</NavLink> */}
       <NavLink to="other">Other</NavLink>
-      {/* <NavLink></NavLink> */}
-      <Outlet context={[todos.length, totalTodoCaunt]} />
-      <Filter value={filter} onChange={changeFilter} />
+      <Outlet context={[todos]} />
+
+      <Filter />
+      {/* <Filter value={filter} onChange={changeFilter} /> */}
+
       <SortSelector
         options={sortOptions}
         onChange={onSortOrderChange}
@@ -183,7 +151,7 @@ export default function TodosPage() {
       />
       <TodoList
         todos={getVisibleTodos}
-        onDeleteTodo={deleteTodo}
+        // onDeleteTodo={deleteTodo}
         onToggleCompleted={toggleCompleted}
       />
     </Container>

@@ -6,20 +6,30 @@ import { theme } from "./сonstans/theme";
 import "./index.css";
 import App from "./App";
 import AuthProvider from "./components/context/AuthProvider";
+import store from "./redux/store";
+import { increment, decrement } from "./redux/actions";
+import { Provider } from "react-redux";
+import { ImNpm } from "react-icons/im";
 
 // const theme = {
 //   colors: {
 //     black: "#010101",
 //   },
 // };
-
+console.log(store);
+console.log(store.getState());
+// store.dispatch(increment(5));
+// store.dispatch(decrement(10));
+//
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <BrowserRouter>
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>

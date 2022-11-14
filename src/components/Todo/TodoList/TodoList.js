@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import TodoItem from "../TodoItem/TodoItem";
 import { Ul } from "./TodoList.styled";
+import { connect } from "react-redux";
+import { deleteTodo } from "../../../redux/todos/todos-actions";
 
 function TodoList({ todos, onToggleCompleted, onDeleteTodo }) {
-
   // useEffect(() => {
   //   attempt()
 
@@ -28,4 +29,22 @@ function TodoList({ todos, onToggleCompleted, onDeleteTodo }) {
     </div>
   );
 }
-export default TodoList;
+
+const getVisibleTodos = (allTodos, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+  const visible = allTodos.filter((todo) =>
+    todo.message.toLowerCase().includes(normalizedFilter)
+  );
+  return visible;
+};
+
+const mapStateToProps = ({ todos: { items, filter } }) => ({
+  todos: getVisibleTodos(items, filter),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onDeleteTodo: (id) => dispatch(deleteTodo(id)),
+  onToggleCompleted: () => null,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
