@@ -1,14 +1,22 @@
 import { useEffect } from "react";
 import TodoItem from "../TodoItem/TodoItem";
 import { Ul } from "./TodoList.styled";
-import { connect } from "react-redux";
-import { deleteTodo } from "../../../redux/todos/todos-actions";
+import { connect, useDispatch, useSelector } from "react-redux";
+import {
+  deleteTodo,
+  toggleCompleted,
+} from "../../../redux/todos/todos-actions";
+import { getVisibleTodos } from "../../../hooks/getVisibleTodos";
 
-function TodoList({ todos, onToggleCompleted, onDeleteTodo }) {
-  // useEffect(() => {
-  //   attempt()
+function TodoList() {
+  const todos = useSelector((state) =>
+    getVisibleTodos(state.todos.items, state.todos.filter)
+  );
 
-  // }, []);
+  const dispatch = useDispatch();
+
+  const onDeleteTodo = (id) => dispatch(deleteTodo(id));
+  const onToggleCompleted = (id) => dispatch(toggleCompleted(id));
 
   return (
     <div>
@@ -30,21 +38,12 @@ function TodoList({ todos, onToggleCompleted, onDeleteTodo }) {
   );
 }
 
-const getVisibleTodos = (allTodos, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-  const visible = allTodos.filter((todo) =>
-    todo.message.toLowerCase().includes(normalizedFilter)
-  );
-  return visible;
-};
+// const getVisibleTodos = (allTodos, filter) => {
+//   const normalizedFilter = filter.toLowerCase();
+//   const visible = allTodos.filter((todo) =>
+//     todo.message.toLowerCase().includes(normalizedFilter)
+//   );
+//   return visible;
+// };
 
-const mapStateToProps = ({ todos: { items, filter } }) => ({
-  todos: getVisibleTodos(items, filter),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onDeleteTodo: (id) => dispatch(deleteTodo(id)),
-  onToggleCompleted: () => null,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export default TodoList;

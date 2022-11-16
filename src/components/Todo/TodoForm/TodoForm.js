@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { Form, Label, Div } from "./TodoForm.styled";
 import { toastError, toastSucces } from "../../../toast/toast";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { addTodo } from "../../../redux/todos/todos-actions";
 
-function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
+function TodoForm({ onSave, valueForm = [], onSubmit, toggleModal }) {
   const [message, setMessage] = useState("");
   const [date, setDate] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const state = { message, date };
     // valueForm.some((todo) => todo.message === message)
-    message.trim() === "" ? toastError("Введите текст") : onSubmit(state);
-    reset();
+    if (message.trim() === "") {
+      toastError("Введите текст");
+      reset();
+    } else {
+      dispatch(addTodo(state));
+      onSave();
+      reset();
+    }
   };
 
   const handleChange = (event) => {
@@ -69,8 +77,5 @@ function TodoForm({ valueForm = [], onSubmit, toggleModal }) {
     </>
   );
 }
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (text) => dispatch(addTodo(text)),
-});
 
-export default connect(null, mapDispatchToProps)(TodoForm);
+export default TodoForm;

@@ -10,14 +10,15 @@ import store from "./redux/store";
 import { increment, decrement } from "./redux/actions";
 import { Provider } from "react-redux";
 import { ImNpm } from "react-icons/im";
+import { PersistGate } from "redux-persist/integration/react";
 
 // const theme = {
 //   colors: {
 //     black: "#010101",
 //   },
 // };
-console.log(store);
-console.log(store.getState());
+// console.log(store);
+// console.log(store.getState());
 // store.dispatch(increment(5));
 // store.dispatch(decrement(10));
 //
@@ -26,11 +27,13 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <BrowserRouter>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </BrowserRouter>
+        <Provider store={store.store}>
+          <PersistGate loading={null} persistor={store.persistor}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </PersistGate>
+        </Provider>
       </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>

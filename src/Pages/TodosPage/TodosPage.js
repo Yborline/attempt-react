@@ -71,14 +71,6 @@ export default function TodosPage() {
     setShowModal(!showModal);
   };
 
-  const toggleCompleted = (todoId) => {
-    setTodos((prevState) =>
-      prevState.map((todo) =>
-        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
   // const deleteTodo = (todoId) => {
   //   setTodos((prevState) => todos.filter((todo) => todo.id !== todoId));
   // };
@@ -113,13 +105,13 @@ export default function TodosPage() {
   //   setFilter(e.currentTarget.value);
   // };
 
-  const getVisibleTodos = useMemo(() => {
-    const normalizedFilter = filter.toLowerCase();
-    const visible = todos.filter((todo) =>
-      todo.message.toLowerCase().includes(normalizedFilter)
-    );
-    return visible;
-  }, [filter, todos]);
+  // const getVisibleTodos = useMemo(() => {
+  //   const normalizedFilter = filter.toLowerCase();
+  //   const visible = todos.filter((todo) =>
+  //     todo.message.toLowerCase().includes(normalizedFilter)
+  //   );
+  //   return visible;
+  // }, [filter, todos]);
 
   return (
     <Container>
@@ -131,6 +123,7 @@ export default function TodosPage() {
         <Modal close={toggleModal}>
           <TodoForm
             valueForm={todos}
+            onSave={toggleModal}
             // onSubmit={formSubmitHandler}
             toggleModal={toggleModal}
           />
@@ -150,9 +143,9 @@ export default function TodosPage() {
         value={sortOrder}
       />
       <TodoList
-        todos={getVisibleTodos}
-        // onDeleteTodo={deleteTodo}
-        onToggleCompleted={toggleCompleted}
+      // todos={getVisibleTodos}
+      // onDeleteTodo={deleteTodo}
+      // onToggleCompleted={toggleCompleted}
       />
     </Container>
   );

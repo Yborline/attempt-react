@@ -1,8 +1,7 @@
-import { ADD, DELETE, CHANGE_FILTER } from "./todos-types";
 import { nanoid } from "nanoid";
+import { createAction } from "@reduxjs/toolkit";
 
-export const addTodo = ({ message, date }) => ({
-  type: ADD,
+export const addTodo = createAction("todos/add", ({ message, date }) => ({
   payload: {
     message,
     date,
@@ -10,14 +9,10 @@ export const addTodo = ({ message, date }) => ({
     id: nanoid(),
     completed: false,
   },
-});
+}));
 
-export const deleteTodo = (todoId) => ({
-  type: DELETE,
-  payload: todoId,
-});
+export const deleteTodo = createAction("todos/delete");
 
-export const changeFilter = (value) => ({
-  type: CHANGE_FILTER,
-  payload: value,
-});
+export const changeFilter = createAction("todos/changeFilter");
+
+export const toggleCompleted = createAction("todos/tpggleCompleted");
