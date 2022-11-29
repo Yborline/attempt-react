@@ -2,11 +2,13 @@ import {
   combineReducers,
   configureStore,
   getDefaultMiddleware,
-} from "@reduxjs/toolkit";
-import { counterReducer } from "./counter/counter-reducer";
-import todosReducer from "./todos/todos-reducer";
+} from '@reduxjs/toolkit';
+import { counterReducer } from './counter/counter-reducer';
+import todosReducer from './todos/todos-reducer';
 // import logger from "./middleware/logger";
-
+import { pokemonApi } from './pokemon';
+import { todosApi } from './todoSlice';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import {
   persistStore,
   persistReducer,
@@ -16,15 +18,15 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import logger from "redux-logger";
+} from 'redux-persist';
+// import storage from "redux-persist/lib/storage";
+import logger from 'redux-logger';
 
-const persistConfig = {
-  key: "todos",
-  storage,
-  blacklist: ["filter"],
-};
+// const persistConfig = {
+//   key: "todos",
+//   storage,
+//   blacklist: ["filter"],
+// };
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -32,20 +34,27 @@ const middleware = [
       ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
+  pokemonApi.middleware,
+  todosApi.middleware,
   logger,
 ];
 
 const store = configureStore({
   reducer: {
-    todos: persistReducer(persistConfig, todosReducer),
+    todos: todosReducer,
+    // todos: persistReducer(persistConfig, todosReducer),
     counter: counterReducer,
+    [pokemonApi.reducerPath]: pokemonApi.reducer,
+    [todosApi.reducerPath]: todosApi.reducer,
   },
   middleware,
-  devTools: process.env.NODE_ENV === "development",
+  devTools: process.env.NODE_ENV === 'development',
 });
 
-const persistor = persistStore(store);
+// const persistor = persistStore(store);
 
-const persistedStore = { store, persistor };
+// const persistedStore = { store, persistor };
 
-export default persistedStore;
+export default store;
+
+setupListeners(store.dispatch);

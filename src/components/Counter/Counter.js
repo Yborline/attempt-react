@@ -1,9 +1,10 @@
 import * as actions from "../../redux/counter/counter-actions";
 import { useDispatch, useSelector } from "react-redux";
+import { getValue, getStep } from "../../redux/counter/counter-selectors";
 
 function Counter() {
-  const value = useSelector((state) => state.counter.value);
-  const step = useSelector((state) => state.counter.step);
+  const value = useSelector(getValue);
+  const step = useSelector(getStep);
 
   const dispatch = useDispatch();
   const increment = () => dispatch(actions.increment(step));

@@ -1,117 +1,33 @@
-import { useState, useMemo, useEffect } from "react";
-import { Container } from "./TodosPage.styled";
-import TodoForm from "../../components/Todo/TodoForm/TodoForm";
-import TodoList from "../../components/Todo/TodoList/TodoList";
-import Filter from "../../components/Todo/Filter/Filter";
-import Modal from "../../components/Modal/Modal";
+import { useState, useEffect } from 'react';
+import { Container } from './TodosPage.styled';
+import TodoForm from 'components/Todo/TodoForm/TodoForm';
+import TodoList from 'components/Todo/TodoList/TodoList';
+import Filter from 'components/Todo/Filter/Filter';
+import Modal from 'components/Modal/Modal';
 
-import { nanoid } from "nanoid";
-import { ReactComponent as AddIcon } from "../../icons/add.svg";
-import hooks from "../../hooks/hookTodo";
-import { toastError, toastSucces } from "../../toast/toast";
-import "react-toastify/dist/ReactToastify.css";
-import SortSelector from "../../components/SortSelector/SortSelector";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { ReactComponent as AddIcon } from '../../icons/add.svg';
+import 'react-toastify/dist/ReactToastify.css';
+import SortSelector from 'components/SortSelector/SortSelector';
+import { NavLink, Outlet } from 'react-router-dom';
+import { todosOperations, todosSelectors } from 'redux/todos';
 
 export default function TodosPage() {
-  const [todos, setTodos] = hooks.useLocalStorage("todos", []);
-  const [filter, setFilter] = useState("");
+  // const [todos, setTodos] = hooks.useLocalStorage("todos", []);
+  const todos = useSelector(todosSelectors.getVisibleSortTodos);
+  const loading = useSelector(todosSelectors.getLoading);
+
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // const sortOrder = location.search;
-  const sortOrder =
-    new URLSearchParams(location.search).get("sortBy") ?? "ascending";
-
-  //   componentDidMount() {
-  //     const todos = localStorage.getItem("todos");
-  //     const parsedTodos = JSON.parse(todos);
-  //     if (parsedTodos) {
-  //       this.setState({ todos: parsedTodos });
-  //     }
-  //   }
-  //   componentDidUpdate(prevProps, prevState) {
-  //     if (this.state.todos !== prevState.todos) {
-  //       localStorage.setItem("todos", JSON.stringify(this.state.todos));
-  //     }
-  //   }
-  // .
-  // .
-  // .
-
-  const sortOptions = [
-    { value: "ascending", label: "По умолачнию" },
-    { value: "descending", label: "По убыванию" },
-  ];
-
-  const onSortOrderChange = (order) => {
-    navigate({ ...location, search: `sortBy=${order}` });
-  };
-
   useEffect(() => {
-    if (location.search !== "") {
-      return;
-    }
-    navigate({ ...location, search: `sortBy=ascending` });
-  }, [navigate, location]);
-
-  useEffect(() => {
-    setTodos((prevTodos) =>
-      [...prevTodos].sort((a, b) => {
-        const aDate = Date.parse(a.date + "T23:59");
-        const bDate = Date.parse(b.date + "T23:59");
-        return sortOrder === "ascending" ? aDate - bDate : bDate - aDate;
-      })
-    );
-  }, [setTodos, sortOrder]);
+    dispatch(todosOperations.fetchTodos());
+  }, [dispatch]);
 
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-
-  // const deleteTodo = (todoId) => {
-  //   setTodos((prevState) => todos.filter((todo) => todo.id !== todoId));
-  // };
-
-  // this.state.todos.find(
-  //   (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
-  // )
-
-  // const formSubmitHandler = ({ message, date }) => {
-  //   const todoItem = {
-  //     message,
-  //     date,
-  //     // timeLeft: attempt(finalDate),
-  //     id: nanoid(),
-  //     completed: false,
-  //   };
-
-  //   const submit = () => {
-  //     setTodos((prevState) => [todoItem, ...prevState]);
-  //     toastSucces("Your note has been saved!");
-  //     toggleModal();
-  //   };
-
-  //   todos.some(
-  //     (todo) => todo.message.toLowerCase() === todoItem.message.toLowerCase()
-  //   )
-  //     ? toastError("This text already exists.")
-  //     : submit();
-  // };
-
-  // const changeFilter = (e) => {
-  //   setFilter(e.currentTarget.value);
-  // };
-
-  // const getVisibleTodos = useMemo(() => {
-  //   const normalizedFilter = filter.toLowerCase();
-  //   const visible = todos.filter((todo) =>
-  //     todo.message.toLowerCase().includes(normalizedFilter)
-  //   );
-  //   return visible;
-  // }, [filter, todos]);
 
   return (
     <Container>
@@ -121,32 +37,15 @@ export default function TodosPage() {
       </button>
       {showModal && (
         <Modal close={toggleModal}>
-          <TodoForm
-            valueForm={todos}
-            onSave={toggleModal}
-            // onSubmit={formSubmitHandler}
-            toggleModal={toggleModal}
-          />
+          <TodoForm onSave={toggleModal} toggleModal={toggleModal} />
         </Modal>
       )}
-
-      {/* <NavLink to="main">Main</NavLink> */}
       <NavLink to="other">Other</NavLink>
       <Outlet context={[todos]} />
-
       <Filter />
-      {/* <Filter value={filter} onChange={changeFilter} /> */}
-
-      <SortSelector
-        options={sortOptions}
-        onChange={onSortOrderChange}
-        value={sortOrder}
-      />
-      <TodoList
-      // todos={getVisibleTodos}
-      // onDeleteTodo={deleteTodo}
-      // onToggleCompleted={toggleCompleted}
-      />
+      <SortSelector />
+      {loading && <h2>Loading...</h2>}
+      <TodoList />
     </Container>
   );
 }
