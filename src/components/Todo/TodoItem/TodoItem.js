@@ -1,9 +1,9 @@
-import { DivItem, Button, DivOther } from "./TodoItem.styled";
-import { ReactComponent as DeleteIcon } from "../../../icons/delete.svg";
-import { Link, useMatch } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import hook from "../../../hooks/hookTimer";
-import { Outlet } from "react-router-dom";
+import { LiItem, Button, DivOther, P } from './TodoItem.styled';
+import { ReactComponent as DeleteIcon } from '../../../icons/delete.svg';
+import { Link, useMatch } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import hook from '../../../hooks/hookTimer';
+import { Outlet } from 'react-router-dom';
 
 function TodoItem({
   id,
@@ -14,7 +14,7 @@ function TodoItem({
   date,
 }) {
   const [time, setTime] = useState(() => new Date());
-  const [finalTime, setFinalTime] = hook.useFinaltimer(date, "");
+  const [finalTime, setFinalTime] = hook.useFinaltimer(date, '');
   const [showTime, setShowTime] = useState(false);
 
   const togglebutton = () => {
@@ -22,9 +22,9 @@ function TodoItem({
   };
 
   return (
-    <DivItem>
+    <LiItem>
       <DivOther>
-        <p>{text}</p>
+        <P>{text}</P>
         <input
           type="checkbox"
           onChange={onToggleCompleted}
@@ -39,8 +39,12 @@ function TodoItem({
       </button>
       {/* {showTime && <p>{finalTime}</p>} */}
       {showTime &&
-        (finalTime === false ? <p>время закончилось</p> : <p>{finalTime}</p>)}
-    </DivItem>
+        (finalTime === false ? (
+          <p>время закончилось</p>
+        ) : (
+          <p>{finalTime}</p>
+        ))}
+    </LiItem>
   );
 }
 

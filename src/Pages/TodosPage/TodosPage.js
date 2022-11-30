@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SortSelector from 'components/SortSelector/SortSelector';
 import { NavLink, Outlet } from 'react-router-dom';
 import { todosOperations, todosSelectors } from 'redux/todos';
+import OtherInfoTodos from 'components/Todo/OtherInfoTodos/OtherInfoTodos';
 
 export default function TodosPage() {
   // const [todos, setTodos] = hooks.useLocalStorage("todos", []);
@@ -40,7 +41,8 @@ export default function TodosPage() {
           <TodoForm onSave={toggleModal} toggleModal={toggleModal} />
         </Modal>
       )}
-      <NavLink to="other">Other</NavLink>
+      <OtherInfoTodos />
+      {/* <NavLink to="other">Other</NavLink> */}
       <Outlet context={[todos]} />
       <Filter />
       <SortSelector />

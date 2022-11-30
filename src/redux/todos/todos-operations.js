@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL =
-  'https://6385fa2a875ca3273d4c20e5.mockapi.io/api/v1';
+axios.defaults.baseURL = 'https://63872bd6d9b24b1be3e82732.mockapi.io/';
 
 export const fetchTodos = createAsyncThunk(
   'todos/fetchTodo',
@@ -48,10 +47,10 @@ export const deleteTodo = createAsyncThunk(
 
 export const toggleCompleted = createAsyncThunk(
   'todos/toggleCompleted',
-  async ({ id, completed }, rejectWithValue) => {
+  async ({ id, completed }, { rejectWithValue }) => {
     const update = { completed };
     try {
-      const { data } = await axios.patch(`todos/${id}`, update);
+      const { data } = await axios.put(`todos/${id}`, update);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

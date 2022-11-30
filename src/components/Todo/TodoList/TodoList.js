@@ -16,23 +16,20 @@ function TodoList() {
   const onToggleCompleted = id => dispatch(toggleCompleted(id));
 
   return (
-    <div>
-      <Ul>
-        {todos.map(({ date, id, message, completed }) => (
-          <li key={id}>
-            <TodoItem
-              onDeleteTodo={() => onDeleteTodo(id)}
-              onToggleCompleted={() =>
-                onToggleCompleted({ id, completed: !completed })
-              }
-              text={message}
-              completed={completed}
-              date={date}
-            />
-          </li>
-        ))}
-      </Ul>
-    </div>
+    <Ul>
+      {todos.map(({ date, id, message, completed }) => (
+        <TodoItem
+          key={id}
+          onDeleteTodo={() => onDeleteTodo(id)}
+          onToggleCompleted={() =>
+            onToggleCompleted({ id, completed: !completed })
+          }
+          text={message}
+          completed={completed}
+          date={date}
+        />
+      ))}
+    </Ul>
   );
 }
 

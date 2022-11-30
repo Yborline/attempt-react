@@ -1,14 +1,13 @@
-import * as actions from "../../redux/counter/counter-actions";
-import { useDispatch, useSelector } from "react-redux";
-import { getValue, getStep } from "../../redux/counter/counter-selectors";
+import { counterActions, counterSelector } from 'redux/counter';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Counter() {
-  const value = useSelector(getValue);
-  const step = useSelector(getStep);
+  const value = useSelector(counterSelector.getValue);
+  const step = useSelector(counterSelector.getStep);
 
   const dispatch = useDispatch();
-  const increment = () => dispatch(actions.increment(step));
-  const decrement = () => dispatch(actions.decrement(step));
+  const increment = () => dispatch(counterActions.increment(step));
+  const decrement = () => dispatch(counterActions.decrement(step));
 
   return (
     <div>

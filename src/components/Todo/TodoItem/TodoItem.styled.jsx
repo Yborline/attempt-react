@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 
-export const DivItem = styled.div`
+export const LiItem = styled.li`
 margin-bottom:10px;
-width:300px;
+max-width:320px;
+min-height:150px;
 
 background-color: ${props => props.theme.colors.todo};
 border: 2px solid gray;
@@ -12,7 +13,9 @@ export const DivOther = styled.div`
 display: flex;
 justify-content: space-between;`
 
-
+export const P = styled.p`
+word-break: break-all;
+min-height:100px;`
 
 export const Button = styled.button`
 height:50px;

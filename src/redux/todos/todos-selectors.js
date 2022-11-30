@@ -4,6 +4,11 @@ export const getTodos = state => state.todos.items;
 export const getFilter = state => state.todos.filter.filterTitle;
 export const getSortFilter = state => state.todos.filter.filterSort;
 export const getLoading = state => state.todos.loading;
+export const getLengthTodos = state => state.todos.items.length;
+
+//
+// ПОСМОТРЕТЬ ФАБРИКУ СЕЛЕКТОРОВ
+//
 
 export const getVisibleTodos = createSelector(
   [getTodos, getFilter],
@@ -17,6 +22,13 @@ export const getVisibleTodos = createSelector(
     return visible;
   },
 );
+
+export const getTotalComplatedTodo = createSelector([getTodos], todos => {
+  return todos.reduce(
+    (total, todo) => (todo.completed ? total + 1 : total),
+    0,
+  );
+});
 
 export const getVisibleSortTodos = createSelector(
   [getVisibleTodos, getSortFilter],

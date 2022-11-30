@@ -1,20 +1,29 @@
 import { useSelector } from 'react-redux';
 import { getTodos } from 'redux/todos/todos-selectors';
+import { useState } from 'react';
+import {
+  getTotalComplatedTodo,
+  getLengthTodos,
+} from 'redux/todos/todos-selectors';
 
 const OtherInfoTodos = () => {
-  const todos = useSelector(getTodos);
+  const [showText, setShowText] = useState(false);
+  const todoComplated = useSelector(getTotalComplatedTodo);
+  const todoLength = useSelector(getLengthTodos);
 
-  const totalTodoCaunt = todos => {
-    return todos.reduce(
-      (total, todo) => (todo.completed ? total + 1 : total),
-      0,
-    );
+  const handleClick = () => {
+    setShowText(!showText);
   };
 
   return (
     <>
-      <p>Amount todo {todos.length}</p>
-      <p>Number of completed {totalTodoCaunt(todos)}</p>
+      <button onClick={handleClick}>Other</button>
+      {showText && (
+        <div>
+          <p>Amount todo {todoLength}</p>
+          <p>Number of completed {todoComplated}</p>
+        </div>
+      )}
     </>
   );
 };

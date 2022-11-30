@@ -36,7 +36,8 @@ const middleware = [
   }),
   pokemonApi.middleware,
   todosApi.middleware,
-  logger,
+
+  // logger,
 ];
 
 const store = configureStore({
