@@ -1,4 +1,14 @@
-import { LiItem, Button, DivOther, P } from './TodoItem.styled';
+import {
+  LiItem,
+  Button,
+  DivOther,
+  PDate,
+  DivDate,
+  DivDellDate,
+  ButtonDate,
+  PText,
+  Checkbox,
+} from './TodoItem.styled';
 import { ReactComponent as DeleteIcon } from '../../../icons/delete.svg';
 import { Link, useMatch } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
@@ -24,26 +34,34 @@ function TodoItem({
   return (
     <LiItem>
       <DivOther>
-        <P>{text}</P>
-        <input
+        <PText>{text}</PText>
+        <Checkbox
           type="checkbox"
           onChange={onToggleCompleted}
           checked={completed}
-        ></input>
+        ></Checkbox>
       </DivOther>
-      <Button type="button" onClick={onDeleteTodo}>
-        <DeleteIcon width="20px" height="20px" fill="red" />
-      </Button>
-      <button type="button" onClick={togglebutton}>
-        {date}
-      </button>
-      {/* {showTime && <p>{finalTime}</p>} */}
-      {showTime &&
-        (finalTime === false ? (
-          <p>время закончилось</p>
-        ) : (
-          <p>{finalTime}</p>
-        ))}
+      <DivDellDate>
+        <Button type="button" onClick={onDeleteTodo}>
+          <DeleteIcon width="20px" height="20px" fill="red" />
+        </Button>
+        <DivDate>
+          <ButtonDate
+            date={finalTime}
+            type="button"
+            onClick={togglebutton}
+          >
+            {date}
+          </ButtonDate>
+          {/* {showTime && <p>{finalTime}</p>} */}
+          {showTime &&
+            (finalTime === false ? (
+              <p>время закончилось</p>
+            ) : (
+              <PDate>{finalTime}</PDate>
+            ))}
+        </DivDate>
+      </DivDellDate>
     </LiItem>
   );
 }

@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Container } from './TodosPage.styled';
+import {
+  Container,
+  ButtonAdd,
+  DivButton,
+  Div,
+  Span,
+} from './TodosPage.styled';
 import TodoForm from 'components/Todo/TodoForm/TodoForm';
 import TodoList from 'components/Todo/TodoList/TodoList';
 import Filter from 'components/Todo/Filter/Filter';
@@ -8,8 +14,7 @@ import Modal from 'components/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as AddIcon } from '../../icons/add.svg';
 import 'react-toastify/dist/ReactToastify.css';
-import SortSelector from 'components/SortSelector/SortSelector';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { todosOperations, todosSelectors } from 'redux/todos';
 import OtherInfoTodos from 'components/Todo/OtherInfoTodos/OtherInfoTodos';
 
@@ -31,24 +36,30 @@ export default function TodosPage() {
   };
 
   return (
-    <Container>
-      <header className="App-header">TOdOs</header>
-      <button onClick={toggleModal}>
-        <AddIcon width="40px" height="40px" fill="gray" />
-      </button>
-      {showModal && (
-        <Modal close={toggleModal}>
-          <TodoForm onSave={toggleModal} toggleModal={toggleModal} />
-        </Modal>
-      )}
-      <OtherInfoTodos />
-      {/* <NavLink to="other">Other</NavLink> */}
-      <Outlet context={[todos]} />
-      <Filter />
-      <SortSelector />
-      {loading && <h2>Loading...</h2>}
+    <Div>
+      <Container>
+        <DivButton>
+          <ButtonAdd onClick={toggleModal}>
+            <Span>
+              <AddIcon width="40px" height="40px" />
+            </Span>
+          </ButtonAdd>
+          {showModal && (
+            <Modal close={toggleModal}>
+              <TodoForm onSave={toggleModal} toggleModal={toggleModal} />
+            </Modal>
+          )}
+          <OtherInfoTodos />
+        </DivButton>
+        {/* <NavLink to="other">Other</NavLink> */}
+        <div>
+          <Outlet context={[todos]} />
+          <Filter />
+          {loading && <h2>Loading...</h2>}
+        </div>
+      </Container>
       <TodoList />
-    </Container>
+    </Div>
   );
 }
 

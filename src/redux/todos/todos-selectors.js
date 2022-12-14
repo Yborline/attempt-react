@@ -42,7 +42,7 @@ export const getVisibleSortTodos = createSelector(
         case 'descending':
           return bDate - aDate;
         case 'updating':
-          return a.dateNow - b.dateNow;
+          return b.dateNow - a.dateNow;
         default:
           return aDate - bDate;
       }

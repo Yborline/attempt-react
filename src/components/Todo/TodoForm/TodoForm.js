@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Form, Label, Div } from './TodoForm.styled';
+import {
+  Form,
+  Label,
+  Div,
+  TextArea,
+  Input,
+  DivButton,
+  ButtonClosed,
+} from './TodoForm.styled';
 import { toastError, toastSucces } from '../../../toast/toast';
 import { useDispatch } from 'react-redux';
 import { addTodo } from '../../../redux/todos/todos-operations';
@@ -26,6 +34,12 @@ function TodoForm({ onSave, valueForm = [], onSubmit, toggleModal }) {
 
   const handleChange = event => {
     const { value, name } = event.currentTarget;
+    if (value.length > 366) {
+      return setTimeout(
+        toastError('Maximum number of characters 366'),
+        10000,
+      );
+    }
     switch (name) {
       case 'message':
         setMessage(value);
@@ -48,7 +62,8 @@ function TodoForm({ onSave, valueForm = [], onSubmit, toggleModal }) {
       <Form onSubmit={handleSubmit}>
         <Label>
           Заметка
-          <textarea
+          <TextArea
+            placeholder="Enter text"
             value={message}
             type="text"
             name="message"
@@ -59,7 +74,7 @@ function TodoForm({ onSave, valueForm = [], onSubmit, toggleModal }) {
         </Label>
         <Label>
           Execution date
-          <input
+          <Input
             value={date}
             type="date"
             name="date"
@@ -68,11 +83,12 @@ function TodoForm({ onSave, valueForm = [], onSubmit, toggleModal }) {
             required
           />
         </Label>
-
-        <button type="submit">Save</button>
-        <button type="button" onClick={toggleModal}>
-          closed
-        </button>
+        <DivButton>
+          <button type="submit">Save</button>
+          <ButtonClosed type="button" onClick={toggleModal}>
+            closed
+          </ButtonClosed>
+        </DivButton>
       </Form>
     </>
   );

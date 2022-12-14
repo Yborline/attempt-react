@@ -5,6 +5,7 @@ import {
   getTotalComplatedTodo,
   getLengthTodos,
 } from 'redux/todos/todos-selectors';
+import { Div, ButtonOther, P } from './OtherInfoTodos.styled';
 
 const OtherInfoTodos = () => {
   const [showText, setShowText] = useState(false);
@@ -16,15 +17,15 @@ const OtherInfoTodos = () => {
   };
 
   return (
-    <>
-      <button onClick={handleClick}>Other</button>
+    <Div>
+      <ButtonOther onClick={handleClick}>Other</ButtonOther>
       {showText && (
         <div>
-          <p>Amount todo {todoLength}</p>
+          <P>Amount todo {todoLength}</P>
           <p>Number of completed {todoComplated}</p>
         </div>
       )}
-    </>
+    </Div>
   );
 };
 

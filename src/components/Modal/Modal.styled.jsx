@@ -15,10 +15,9 @@ height: 100vh;
 
 export const ModalConent = styled.div`
 position: absolute;
-
 top: 30%;
 left:30%;
-min-height:300px;
+min-height:200px;
 max-width:600px;
 width: 100%;
 box-shadow: 0px 2px 1px -1px rgba(0,0,0, 0.2),
