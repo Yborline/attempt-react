@@ -29,7 +29,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "api-server": "json-server --port 3004 --watch db.json"
+    "api-server": "json-server --port 3004 --watch db.json",
+    "predeploy": "npm run build",
+    "deploy": "netlify deploy -p"
   },
   "eslintConfig": {
     "extends": [
