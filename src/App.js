@@ -1,28 +1,32 @@
 // import "./App.css";
-import { Component } from "react";
-import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Toast } from "./toast/toast";
-import Navigation from "./components/Navigation/Navigation";
-import { Container } from "./App.styled";
+import { Component } from 'react';
+import { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Toast } from './toast/toast';
+import Navigation from './components/Navigation/Navigation';
+import { Container } from './App.styled';
 
 const OtherInfoTodos = lazy(() =>
-  import("././components/Todo/OtherInfoTodos/OtherInfoTodos")
+  import('./components/Todo/OtherInfoTodos/OtherInfoTodos'),
 );
 
 const HomeView = lazy(() =>
-  import("./Pages/HomePage/HomePage" /* webpackChunkName: "home-view" */)
+  import('./Pages/HomePage/HomePage' /* webpackChunkName: "home-view" */),
 );
 const PokemonView = lazy(() =>
   import(
-    "./Pages/PokemonPage/PokemonPage" /* webpackChunkName: "pokemon-view" */
-  )
+    './Pages/PokemonPage/PokemonPage' /* webpackChunkName: "pokemon-view" */
+  ),
 );
 const OtherView = lazy(() =>
-  import("./Pages/OtherPage/OtherPage" /* webpackChunkName: "other-view" */)
+  import(
+    './Pages/OtherPage/OtherPage' /* webpackChunkName: "other-view" */
+  ),
 );
 const TodosView = lazy(() =>
-  import("./Pages/TodosPage/TodosPage" /* webpackChunkName: "todos-view" */)
+  import(
+    './Pages/TodosPage/TodosPage' /* webpackChunkName: "todos-view" */
+  ),
 );
 
 class App extends Component {
